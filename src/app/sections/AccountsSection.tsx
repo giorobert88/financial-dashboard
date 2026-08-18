@@ -1,6 +1,6 @@
 import React from "react";
 import { getAccountsSummaryData } from "@/lib/dashboard-data";
-import { getActualPayday } from "@/lib/payday";
+import { getNextPayday } from "@/lib/payday";
 import { Wallet, ReceiptText, Check, AlertCircle } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { getDisplayCurrency } from "@/lib/currency";
@@ -17,13 +17,7 @@ export async function AccountsSection({ now }: AccountsSectionProps) {
   const fmt = (n: number, opts?: Intl.NumberFormatOptions) => formatCurrency(n, displayCurrency.code, opts);
 
   const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  let nextPayday = getActualPayday(now.getMonth() + 1, now.getFullYear());
-  if (nextPayday <= todayMidnight) {
-    let nm = now.getMonth() + 2;
-    let ny = now.getFullYear();
-    if (nm > 12) { nm = 1; ny += 1; }
-    nextPayday = getActualPayday(nm, ny);
-  }
+  const nextPayday = getNextPayday(todayMidnight);
 
   const firstNegativePayment = data.projectedPayments.find((p) => p.projectedBalance < 0);
   const negativeDate = firstNegativePayment ? new Date(firstNegativePayment.dueDate) : null;

@@ -1,4 +1,4 @@
-import { getCycleForMonth, getAdjacentCycles, formatDateString, getDashboardCycle } from "@/lib/payday";
+import { getAdjacentCycles, formatDateString, getDashboardCycle, getCycleFromId, getCurrentCycleId } from "@/lib/payday";
 import { getCycleFullData } from "@/lib/firefly";
 import { formatCurrency } from "@/lib/format";
 import { getDisplayCurrency } from "@/lib/currency";
@@ -27,18 +27,12 @@ export default async function PeriodPage({
 
   const isIncome = type === "income";
 
-  // Parse period and find the cycle
-  const match = period.match(/^(\d{4})-(\d{2})$/);
-  if (!match) {
+  let cycle;
+  try {
+    cycle = getCycleFromId(period);
+  } catch (e) {
     notFound();
   }
-  const year = parseInt(match[1], 10);
-  const month = parseInt(match[2], 10);
-  if (month < 1 || month > 12) {
-    notFound();
-  }
-
-  const cycle = getCycleForMonth(year, month);
   
   // Check if cycle is in the future
   const today = new Date();
@@ -47,7 +41,7 @@ export default async function PeriodPage({
     notFound();
   }
 
-  const currentCycleId = `${currentCycle.startDate.getFullYear()}-${String(currentCycle.startDate.getMonth() + 1).padStart(2, '0')}`;
+  const currentCycleId = getCurrentCycleId(today);
   const isCurrentPeriod = period === currentCycleId;
 
   const { prev: prevCycle, next: nextCycle } = getAdjacentCycles(period);

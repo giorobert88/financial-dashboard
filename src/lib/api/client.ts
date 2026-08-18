@@ -18,16 +18,18 @@ export function getActiveApiUrl(): string {
   try {
     const overridePath = path.join(process.cwd(), ".url_override");
     if (fs.existsSync(overridePath)) {
-      return fs.readFileSync(overridePath, "utf-8").trim();
+      const url = fs.readFileSync(overridePath, "utf-8").trim();
+      return url.endsWith('/') ? url.slice(0, -1) : url;
     }
     const stored = getStoredAuthData();
     if (stored?.fireflyApiUrl) {
-      return stored.fireflyApiUrl;
+      return stored.fireflyApiUrl.endsWith('/') ? stored.fireflyApiUrl.slice(0, -1) : stored.fireflyApiUrl;
     }
   } catch (err) {
     console.error("Failed to read API URL override file:", err);
   }
-  return process.env.FIREFLY_API_URL || "http://localhost:8080";
+  const defaultUrl = process.env.FIREFLY_API_URL || "http://localhost:8080";
+  return defaultUrl.endsWith('/') ? defaultUrl.slice(0, -1) : defaultUrl;
 }
 
 export function getActivePat(): string {
@@ -138,7 +140,7 @@ export async function fetchFirefly(
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error("Firefly API Error:", response.status, response.statusText, errorText);
+    console.error("Firefly API Error:", response.status, response.statusText, "URL:", url.toString(), errorText);
     throw new Error(`Firefly API failed: ${response.statusText}`);
   }
 

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { getActualPayday } from "@/lib/payday";
+
 import { Inbox, Search } from "lucide-react";
 import Link from "next/link";
 import { AccountsSection } from "./sections/AccountsSection";

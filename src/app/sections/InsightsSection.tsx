@@ -4,7 +4,7 @@ import {
   getBurnComparisonData,
 } from "@/lib/dashboard-data";
 import { getUncategorizedTransactions } from "@/lib/firefly";
-import { getDashboardCycle } from "@/lib/payday";
+import { getDashboardCycle, getCurrentCycleId } from "@/lib/payday";
 import { generateInsights } from "@/lib/insights";
 import { InsightCard } from "@/components/InsightCard";
 import { formatCurrency } from "@/lib/format";
@@ -29,10 +29,7 @@ export async function InsightsSection({ now }: InsightsSectionProps) {
   if (!accountsData || !burnData) return null;
 
   // Compute cycle ID for dismissal keying
-  const cycle = getDashboardCycle(now);
-  const cycleId = `${cycle.startDate.getFullYear()}-${String(
-    cycle.startDate.getMonth() + 1
-  ).padStart(2, "0")}`;
+  const cycleId = getCurrentCycleId(now);
 
   // Find projected negative date
   const firstNegative = accountsData.projectedPayments.find(
