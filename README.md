@@ -113,7 +113,7 @@ volumes:
 **.env.local**:
 ```env
 SESSION_SECRET="generate-with-openssl-rand-base64-32"
-# Excecute in Linux terminal: openssl rand -base64 32
+# Execute in Linux terminal: openssl rand -base64 32
 
 # Optional (Can be configured in the UI instead)
 # FIREFLY_API_URL="http://your-firefly-server:8080"
