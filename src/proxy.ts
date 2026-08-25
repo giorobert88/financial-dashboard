@@ -20,8 +20,8 @@ export function proxy(request: NextRequest) {
   // Check for the auth cookie
   const sessionCookie = request.cookies.get("auth_session");
 
-  // If no cookie or invalid cookie, redirect to login
-  if (!sessionCookie || sessionCookie.value !== SESSION_SECRET) {
+  // Fail closed if SESSION_SECRET is missing/empty or if cookie is invalid
+  if (!SESSION_SECRET || !sessionCookie?.value || sessionCookie.value !== SESSION_SECRET) {
     const loginUrl = new URL("/login", request.url);
     return NextResponse.redirect(loginUrl);
   }

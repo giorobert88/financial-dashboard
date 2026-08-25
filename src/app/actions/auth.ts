@@ -24,6 +24,9 @@ export async function createPasswordAction(prevState: any, formData: FormData) {
   const fireflyApiUrl = formData.get("fireflyApiUrl") as string;
   const fireflyPat = formData.get("fireflyPat") as string;
   
+  if (!SESSION_SECRET) {
+    return { error: "Server error: SESSION_SECRET is not configured in environment variables." };
+  }
   if (!password || password.length < 4) {
     return { error: "Password must be at least 4 characters long." };
   }
@@ -63,6 +66,10 @@ export async function createPasswordAction(prevState: any, formData: FormData) {
 
 export async function loginAction(prevState: any, formData: FormData) {
   const password = formData.get("password") as string;
+
+  if (!SESSION_SECRET) {
+    return { error: "Server error: SESSION_SECRET is not configured in environment variables." };
+  }
 
   if (!fs.existsSync(AUTH_FILE_PATH)) {
     return { error: "Dashboard is not set up yet." };

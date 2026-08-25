@@ -277,14 +277,22 @@ export async function updatePaydayConfigAction(
     const AUTH_FILE_PATH = process.env.AUTH_FILE_PATH || path.join(process.cwd(), ".dashboard_auth");
     const PAYDAY_CONFIG_PATH = process.env.PAYDAY_CONFIG_PATH || path.join(path.dirname(AUTH_FILE_PATH), ".payday_config");
 
-    if (config.ruleType === "fixed_date") {
+    if (config.ruleType === "fixed_date" && (!config.frequency || config.frequency === "monthly")) {
       const fd = config.fixedDate;
       if (fd === undefined || isNaN(fd) || fd < 1 || fd > 31) {
         return { success: false, error: "Fixed date must be a number between 1 and 31" };
       }
     }
 
+    if (config.frequency && config.frequency !== "monthly") {
+      if (!config.anchorDate || !config.anchorDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return { success: false, error: "Valid Anchor Date (YYYY-MM-DD) is required for weekly or bi-weekly frequencies" };
+      }
+    }
+
     const payload = {
+      frequency: config.frequency || "monthly",
+      anchorDate: config.frequency !== "monthly" ? config.anchorDate : undefined,
       ruleType: config.ruleType,
       fixedDate: config.ruleType === "fixed_date" ? Number(config.fixedDate) : undefined,
       rollbackWeekend: config.ruleType === "fixed_date" ? !!config.rollbackWeekend : undefined,
