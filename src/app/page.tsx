@@ -20,7 +20,6 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const now = new Date();
-  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
   // Greeting based on time
   const hour = now.getHours();

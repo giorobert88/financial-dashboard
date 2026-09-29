@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createRule, updateRule, deleteRule, getOrCreateRuleGroup, Rule } from "@/lib/api/rules";
-import { createBill } from "@/lib/api/bills";
+import { createRule, updateRule, deleteRule, getOrCreateRuleGroup, Rule, createBill } from "@/lib/firefly";
 import { cleanTransactionDescription } from "@/lib/utils/string";
 
 /**
@@ -68,7 +67,7 @@ export async function createSubscriptionRule(
     
     // 1. Create the Bill in Firefly III
     // Firefly expects repeat_freq to be monthly, weekly, quarterly, half-year, yearly, etc.
-    const bill = await createBill({
+    await createBill({
       name: billName,
       amountMin: amount,
       amountMax: amount,

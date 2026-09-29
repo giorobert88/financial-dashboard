@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { DisplayCurrency, DEFAULT_DISPLAY_CURRENCY } from "@/lib/currency-types";
 import { formatCurrency } from "@/lib/format";
 
@@ -28,10 +28,6 @@ export function CurrencyProvider({
   children: React.ReactNode;
 }) {
   const [currency, setCurrencyState] = useState<DisplayCurrency>(initialCurrency);
-
-  useEffect(() => {
-    setCurrencyState(initialCurrency);
-  }, [initialCurrency]);
 
   const fmt = (n: number, options?: Intl.NumberFormatOptions) => {
     return formatCurrency(n, currency.code, options);

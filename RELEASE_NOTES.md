@@ -1,4 +1,19 @@
-# Release Notes — v0.1.1
+# Release Notes
+
+## 🌟 What's New in v0.2.0
+
+### 📅 Flexible Payday Scheduling (Weekly & Bi-Weekly)
+- **Weekly & Bi-Weekly Cycles**: Added full support for configuring weekly and bi-weekly payday cycles in `/settings/payday` alongside existing monthly cycles.
+- **Dynamic Period Calculations**: Automatic calculation of current, previous, and next budget cycles tailored to your custom payday frequency.
+- **Batch API Optimizations**: Optimized transaction and balance queries to Firefly III into efficient batch requests, drastically cutting dashboard loading latency.
+
+### ⚙️ Rules API & Service Layer Modernization
+- **Unified Rules API**: Integrated Firefly III rules management directly under the `@/lib/firefly` API surface, standardizing automation and rule group creation.
+- **PWA & Edge Proxy Bypass**: Enhanced edge proxy routing to ensure service worker (`/sw.js`) and application icons (`/icon-*.png`, `/apple-icon.png`) are exempt from session authentication redirects, enabling robust offline caching and home screen installation.
+- **React 19 & Next.js 16.3 Compliance**: Aligned `CurrencyContext` state initialization with React 19 conventions, eliminating synchronous effect state triggers and ESLint warnings.
+- **Core Dependency Updates**: Upgraded Next.js to `16.3.7`, React to `19.3.0`, Serwist to `9.5.12`, Lucide React to `1.48.0`, and Tailwind CSS to `4.3.3`.
+
+---
 
 ## 🌟 What's New in v0.1.1
 

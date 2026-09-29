@@ -1,5 +1,4 @@
-import { getBillDetails } from "@/lib/api/bills";
-import { getRules, Rule } from "@/lib/api/rules";
+import { getBillDetails, getRules, Rule } from "@/lib/firefly";
 import { SubscriptionEditClient } from "./SubscriptionEditClient";
 import { notFound } from "next/navigation";
 

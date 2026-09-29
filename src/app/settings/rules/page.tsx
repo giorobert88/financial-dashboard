@@ -1,6 +1,4 @@
-import { getRules, getRuleGroups } from "@/lib/api/rules";
-import { getCategories } from "@/lib/api/categories";
-import { fetchFirefly } from "@/lib/api/client";
+import { getRules, getRuleGroups, getCategories, fetchFirefly } from "@/lib/firefly";
 import { RulesListClient } from "./RulesListClient";
 
 export const dynamic = "force-dynamic";

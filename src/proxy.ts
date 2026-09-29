@@ -12,6 +12,10 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/api/auth") ||
     pathname === "/favicon.ico" ||
     pathname === "/manifest.json" ||
+    pathname === "/sw.js" ||
+    pathname.endsWith(".png") ||
+    pathname.endsWith(".svg") ||
+    pathname.endsWith(".ico") ||
     pathname === "/login"
   ) {
     return NextResponse.next();
@@ -32,6 +36,6 @@ export function proxy(request: NextRequest) {
 // Ensure middleware runs on all paths except static files
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|manifest.json|login).*)",
+    "/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|.*\\.png$|.*\\.svg$|login).*)",
   ],
 };

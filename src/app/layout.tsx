@@ -46,7 +46,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={cn("dark", "font-sans", geist.variable)}>
       <body className="antialiased pb-20">
-        <CurrencyProvider initialCurrency={displayCurrency}>
+        <CurrencyProvider key={displayCurrency.code} initialCurrency={displayCurrency}>
           <EditTransactionProvider categories={categories}>
             {/* Main Content */}
             <main className="min-h-screen">
