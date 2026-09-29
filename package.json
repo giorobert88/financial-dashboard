@@ -10,7 +10,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@serwist/next": "^9.5.11",
+    "@serwist/next": "^9.5.12",
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
