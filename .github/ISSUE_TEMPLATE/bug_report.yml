@@ -1,0 +1,60 @@
+name: Bug Report
+description: File a bug report to help us improve Firefly Financial Dashboard
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please provide as much detail as possible.
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How do we reproduce this issue?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear description of what you expected to happen.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Deployment Environment
+      options:
+        - Docker Compose (Pre-built GHCR image)
+        - Docker (Manual Build)
+        - Bare Metal / Node.js
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Dashboard Version
+      description: What version or commit are you running? (e.g. v0.1.1 or latest)
+      placeholder: e.g. v0.1.1
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs & Screenshots
+      description: Please paste any container logs or browser console errors here.
+      render: shell
