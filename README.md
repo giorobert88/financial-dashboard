@@ -1,5 +1,9 @@
 # Firefly Personal Financial Dashboard
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Explore%20Showcase-00c853?style=flat-square&logo=githubpages&logoColor=white)](https://giorobert88.github.io/financial-dashboard/)
+[![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?style=flat-square&logo=docker&logoColor=white)](https://github.com/giorobert88/financial-dashboard/pkgs/container/financial-dashboard)
+[![Release](https://img.shields.io/github/v/release/giorobert88/financial-dashboard?style=flat-square&color=blueviolet)](https://github.com/giorobert88/financial-dashboard/releases)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Donate-orange?style=flat-square&logo=buy-me-a-coffee)](https://buymeacoffee.com/giorobert)
 
 An interactive, responsive financial dashboard optimized for mobile layouts, connecting directly to a **Firefly III** instance. Designed to track Safe-to-Spend pacing, upcoming cycle outgoings, and categorizing transactions on the fly.
