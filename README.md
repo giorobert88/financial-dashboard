@@ -168,9 +168,9 @@ src/
 
 ---
 
-## Support & AI Collaboration
+## AI Collaboration & Development
 
-This is my first coding project built in collaboration with an AI partner. Leveraging AI has allowed me to design, build, secure, and package this dashboard as a production-ready Docker container, showing just how powerful human-AI pair programming can be.
+This project was built from concept to production in collaboration with **Antigravity**, Google's agentic AI coding assistant. Leveraging Antigravity as an AI pair programmer enabled end-to-end product design, rapid full-stack implementation (Next.js 16 / React 19), security hardening, and packaging into a production-ready multi-architecture Docker container—demonstrating how modern Product Managers can build and ship working MVPs independently.
 
 If you enjoy using this dashboard and would like to support its ongoing development, please consider donating:
 
