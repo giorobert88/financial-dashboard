@@ -52,7 +52,7 @@ export function BurnComparisonChart({
         {
           label: "Previous Cycle",
           data: prevCumulative,
-          borderColor: "rgba(255, 255, 255, 0.3)",
+          borderColor: "rgba(161, 161, 170, 0.6)",
           borderDash: [4, 4],
           borderWidth: 1.5,
           fill: false,

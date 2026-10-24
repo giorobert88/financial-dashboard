@@ -234,3 +234,61 @@
     animation: insight-dismiss 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 }
+/* Light mode follows the OS. The UI hard-codes a dark zinc palette (bg-zinc-900, text-zinc-400, bg-white/5...),
+   so instead of rewriting every class, light mode flips the zinc scale and white/black, and darkens the accent
+   shades that were tuned for a dark background. */
+@media (prefers-color-scheme: light) {
+  :root, :root.dark {
+    color-scheme: light;
+    --color-zinc-50: oklch(14.1% 0.005 285.823);
+    --color-zinc-100: oklch(21% 0.006 285.885);
+    --color-zinc-200: oklch(27.4% 0.006 286.033);
+    --color-zinc-300: oklch(37% 0.013 285.805);
+    --color-zinc-400: oklch(44.2% 0.017 285.786);
+    --color-zinc-600: oklch(70.5% 0.015 286.067);
+    --color-zinc-700: oklch(87.1% 0.006 286.286);
+    --color-zinc-800: oklch(92% 0.004 286.32);
+    --color-zinc-900: oklch(96.7% 0.001 286.375);
+    --color-zinc-950: oklch(98.5% 0 none);
+    --color-white: #09090b;
+    --color-black: #ffffff;
+    --color-rose-300: oklch(51.4% 0.222 16.935);
+    --color-rose-400: oklch(58.6% 0.253 17.585);
+    --color-emerald-400: oklch(59.6% 0.145 163.225);
+    --color-cyan-300: oklch(52% 0.105 223.128);
+    --color-cyan-400: oklch(60.9% 0.126 221.723);
+    --color-amber-400: oklch(66.6% 0.179 58.318);
+    --color-violet-400: oklch(54.1% 0.281 293.009);
+    --color-blue-400: oklch(54.6% 0.245 262.881);
+    --color-indigo-400: oklch(51.1% 0.262 276.966);
+    --color-orange-400: oklch(64.6% 0.222 41.116);
+    --color-pink-400: oklch(59.2% 0.249 0.584);
+    --color-sky-400: oklch(58.8% 0.158 241.966);
+    --color-fuchsia-400: oklch(59.1% 0.293 322.896);
+
+    --background: #fafafa;
+    --foreground: #09090b;
+    --card: #ffffff;
+    --card-foreground: #09090b;
+    --popover: #ffffff;
+    --popover-foreground: #09090b;
+    --primary: #09090b;
+    --primary-foreground: #fafafa;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #09090b;
+    --muted: #f4f4f5;
+    --muted-foreground: #52525b;
+    --accent: #f4f4f5;
+    --accent-foreground: #09090b;
+    --border: rgba(0, 0, 0, 0.1);
+    --input: rgba(0, 0, 0, 0.1);
+    --ring: #a1a1aa;
+  }
+  .dark .glass {
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .glass-card {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+  }
+}

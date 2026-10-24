@@ -12,7 +12,10 @@ import { CurrencyProvider } from "@/components/CurrencyContext";
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
   viewportFit: "cover",
 };
 

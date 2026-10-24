@@ -30,7 +30,7 @@ export const chartTheme = {
   plugins: {
     legend: {
       labels: {
-        color: "rgba(244, 244, 245, 0.6)",
+        color: "#71717a", // zinc-500: readable in light and dark mode
         font: {
           size: 10,
           weight: "bold" as const,
@@ -64,7 +64,7 @@ export const chartTheme = {
         display: false,
       },
       ticks: {
-        color: "rgba(244, 244, 245, 0.4)",
+        color: "#71717a",
         font: {
           size: 9,
           family: "var(--font-sans), system-ui, sans-serif",
@@ -73,10 +73,10 @@ export const chartTheme = {
     },
     y: {
       grid: {
-        color: "rgba(255, 255, 255, 0.05)",
+        color: "rgba(113, 113, 122, 0.15)",
       },
       ticks: {
-        color: "rgba(244, 244, 245, 0.4)",
+        color: "#71717a",
         font: {
           size: 9,
           family: "var(--font-sans), system-ui, sans-serif",
