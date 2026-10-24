@@ -36,7 +36,7 @@ export default async function DashboardPage(props: PageProps) {
 
   // Fetch summary for cycles ending at endCycleId
   const config = getPaydayConfig();
-  const historyCount = config.frequency === "weekly" ? 24 : config.frequency === "bi_weekly" ? 12 : 6;
+  const historyCount = config.frequency === "weekly" ? 24 : config.frequency === "bi_weekly" || config.frequency === "semi_monthly" ? 12 : 6;
   const pastCycles = getPastCyclesFrom(endCycleId, historyCount);
   
   // Batch fetch transactions

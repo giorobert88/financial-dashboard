@@ -284,7 +284,7 @@ export async function updatePaydayConfigAction(
       }
     }
 
-    if (config.frequency && config.frequency !== "monthly") {
+    if (config.frequency === "weekly" || config.frequency === "bi_weekly") {
       if (!config.anchorDate || !config.anchorDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return { success: false, error: "Valid Anchor Date (YYYY-MM-DD) is required for weekly or bi-weekly frequencies" };
       }
@@ -292,7 +292,7 @@ export async function updatePaydayConfigAction(
 
     const payload = {
       frequency: config.frequency || "monthly",
-      anchorDate: config.frequency !== "monthly" ? config.anchorDate : undefined,
+      anchorDate: config.frequency === "weekly" || config.frequency === "bi_weekly" ? config.anchorDate : undefined,
       ruleType: config.ruleType,
       fixedDate: config.ruleType === "fixed_date" ? Number(config.fixedDate) : undefined,
       rollbackWeekend: config.ruleType === "fixed_date" ? !!config.rollbackWeekend : undefined,

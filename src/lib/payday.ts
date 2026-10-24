@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export type PaydayFrequency = "monthly" | "bi_weekly" | "weekly";
+export type PaydayFrequency = "monthly" | "semi_monthly" | "bi_weekly" | "weekly";
 
 export interface PaydayConfig {
   frequency?: PaydayFrequency;
@@ -101,9 +101,44 @@ function getIntervalCycle(referenceDate: Date, anchorDateStr: string, daysLength
   return { startDate, endDate };
 }
 
+// Semi-monthly: paid on the 15th and the 30th (the last day in February), with optional weekend rollback.
+function getSemiMonthlyPayday(year: number, month: number, second: boolean): Date {
+  const first = new Date(year, month - 1, 1); // normalises month 0 / 13 into the adjacent year
+  const y = first.getFullYear();
+  const m = first.getMonth();
+  const date = new Date(y, m, second ? Math.min(30, new Date(y, m + 1, 0).getDate()) : 15);
+  if (getPaydayConfig().rollbackWeekend ?? true) {
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek === 6) date.setDate(date.getDate() - 1);
+    else if (dayOfWeek === 0) date.setDate(date.getDate() - 2);
+  }
+  return date;
+}
+
+function getSemiMonthlyCycle(referenceDate: Date): { startDate: Date, endDate: Date } {
+  const ref = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), referenceDate.getDate());
+  const paydays: Date[] = [];
+  for (const offset of [-1, 0, 1]) {
+    paydays.push(getSemiMonthlyPayday(ref.getFullYear(), ref.getMonth() + 1 + offset, false));
+    paydays.push(getSemiMonthlyPayday(ref.getFullYear(), ref.getMonth() + 1 + offset, true));
+  }
+  let i = 0;
+  while (paydays[i + 1] <= ref) i++;
+  const next = paydays[i + 1];
+  return { startDate: paydays[i], endDate: new Date(next.getFullYear(), next.getMonth(), next.getDate() - 1) };
+}
+
+// The cycle before (-1) or after (+1) a non-monthly cycle.
+function shiftCycle(cycle: { startDate: Date, endDate: Date }, direction: -1 | 1): { startDate: Date, endDate: Date } {
+  const edge = direction < 0 ? cycle.startDate : cycle.endDate;
+  return getDashboardCycle(new Date(edge.getFullYear(), edge.getMonth(), edge.getDate() + direction));
+}
+
 export function getCurrentPaydayCycle(referenceDate: Date = new Date()): { startDate: Date, endDate: Date } {
   const config = getPaydayConfig();
-  if (config.frequency === "weekly") {
+  if (config.frequency === "semi_monthly") {
+    return getSemiMonthlyCycle(referenceDate);
+  } else if (config.frequency === "weekly") {
     return getIntervalCycle(referenceDate, config.anchorDate || formatDateString(new Date()), 7);
   } else if (config.frequency === "bi_weekly") {
     return getIntervalCycle(referenceDate, config.anchorDate || formatDateString(new Date()), 14);
@@ -151,7 +186,9 @@ export function getCycleBoundary(month: number, year: number): Date {
 
 export function getDashboardCycle(referenceDate: Date = new Date()): { startDate: Date, endDate: Date } {
   const config = getPaydayConfig();
-  if (config.frequency === "weekly") {
+  if (config.frequency === "semi_monthly") {
+    return getSemiMonthlyCycle(referenceDate);
+  } else if (config.frequency === "weekly") {
     return getIntervalCycle(referenceDate, config.anchorDate || formatDateString(new Date()), 7);
   } else if (config.frequency === "bi_weekly") {
     return getIntervalCycle(referenceDate, config.anchorDate || formatDateString(new Date()), 14);
@@ -184,7 +221,7 @@ export function getDashboardCycle(referenceDate: Date = new Date()): { startDate
 export function getNextPayday(referenceDate: Date = new Date()): Date {
   const config = getPaydayConfig();
   
-  if (config.frequency === "weekly" || config.frequency === "bi_weekly") {
+  if (config.frequency !== "monthly") {
     const cycle = getCurrentPaydayCycle(referenceDate);
     if (formatDateString(referenceDate) === formatDateString(cycle.startDate)) {
       return cycle.startDate;
@@ -284,12 +321,10 @@ export function getPastPaydayCycles(count: number = 6, referenceDate: Date = new
       cycles.push(getCycleForMonth(refYear, refMonth));
     }
   } else {
-    const daysLength = freq === "weekly" ? 7 : 14;
-    const msPerDay = 1000 * 60 * 60 * 24;
+    let c = currentCycle;
     for (let i = 0; i < count; i++) {
-      const sd = new Date(currentCycle.startDate.getTime() - i * daysLength * msPerDay);
-      const ed = new Date(sd.getTime() + (daysLength - 1) * msPerDay);
-      cycles.push({ startDate: sd, endDate: ed, label: formatCycleLabel(sd, ed, freq), id: formatCycleId(sd, freq) });
+      cycles.push({ ...c, label: formatCycleLabel(c.startDate, c.endDate, freq), id: formatCycleId(c.startDate, freq) });
+      c = shiftCycle(c, -1);
     }
   }
   return cycles.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
@@ -311,12 +346,10 @@ export function getPastCyclesFrom(periodId: string, count: number = 12): { start
       cycles.push(getCycleForMonth(refYear, refMonth));
     }
   } else {
-    const daysLength = freq === "weekly" ? 7 : 14;
-    const msPerDay = 1000 * 60 * 60 * 24;
+    let c: { startDate: Date, endDate: Date } = startCycle;
     for (let i = 0; i < count; i++) {
-      const sd = new Date(startCycle.startDate.getTime() - i * daysLength * msPerDay);
-      const ed = new Date(sd.getTime() + (daysLength - 1) * msPerDay);
-      cycles.push({ startDate: sd, endDate: ed, label: formatCycleLabel(sd, ed, freq), id: formatCycleId(sd, freq) });
+      cycles.push({ ...c, label: formatCycleLabel(c.startDate, c.endDate, freq), id: formatCycleId(c.startDate, freq) });
+      c = shiftCycle(c, -1);
     }
   }
   return cycles.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
@@ -336,19 +369,10 @@ export function getAdjacentCycles(periodId: string): { prev: { label: string; id
     prevCycle = getCycleForMonth(pY, pM);
     nextCycle = getCycleForMonth(nY, nM);
   } else {
-    const daysLength = freq === "weekly" ? 7 : 14;
-    const msPerDay = 1000 * 60 * 60 * 24;
-    const pSd = new Date(cycle.startDate.getTime() - daysLength * msPerDay);
-    const nSd = new Date(cycle.startDate.getTime() + daysLength * msPerDay);
-    
-    prevCycle = {
-      label: formatCycleLabel(pSd, new Date(pSd.getTime() + (daysLength - 1) * msPerDay), freq),
-      id: formatCycleId(pSd, freq)
-    };
-    nextCycle = {
-      label: formatCycleLabel(nSd, new Date(nSd.getTime() + (daysLength - 1) * msPerDay), freq),
-      id: formatCycleId(nSd, freq)
-    };
+    const p = shiftCycle(cycle, -1);
+    const n = shiftCycle(cycle, 1);
+    prevCycle = { label: formatCycleLabel(p.startDate, p.endDate, freq), id: formatCycleId(p.startDate, freq) };
+    nextCycle = { label: formatCycleLabel(n.startDate, n.endDate, freq), id: formatCycleId(n.startDate, freq) };
   }
   
   const currentCycle = getDashboardCycle(new Date());

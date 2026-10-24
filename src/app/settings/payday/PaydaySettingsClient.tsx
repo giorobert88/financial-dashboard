@@ -58,8 +58,8 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
         frequency,
         ruleType: frequency === "monthly" ? ruleType : "fixed_date", // default if not used
         fixedDate: parsedFixedDate,
-        rollbackWeekend: ruleType === "fixed_date" ? rollbackWeekend : undefined,
-        anchorDate: frequency !== "monthly" ? anchorDate : undefined,
+        rollbackWeekend: frequency !== "monthly" || ruleType === "fixed_date" ? rollbackWeekend : undefined,
+        anchorDate: frequency === "weekly" || frequency === "bi_weekly" ? anchorDate : undefined,
       });
 
       if (result.success) {
@@ -91,9 +91,10 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
             Select how often you get paid. This will adapt the dashboard, cycle boundaries, and charts.
           </p>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { id: "monthly", label: "Monthly" },
+              { id: "semi_monthly", label: "15th & 30th" },
               { id: "bi_weekly", label: "Bi-Weekly" },
               { id: "weekly", label: "Weekly" },
             ].map((f) => (
@@ -204,7 +205,7 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
       )}
 
       {/* Section 2: Rule Details (only visible for fixed_date) */}
-      {frequency === "monthly" && ruleType === "fixed_date" && (
+      {((frequency === "monthly" && ruleType === "fixed_date") || frequency === "semi_monthly") && (
         <section className="flex flex-col gap-3 animate-fade-in">
           <div className="flex items-center gap-2 px-2">
             <div className="w-6 h-6 rounded-full flex items-center justify-center bg-zinc-800 text-zinc-300">
@@ -216,7 +217,7 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
           </div>
 
           <div className="glass-card p-4 flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
+            {frequency === "monthly" && <div className="flex flex-col gap-1.5">
               <label htmlFor="fixed-date-input" className="text-xs font-bold text-zinc-400 uppercase tracking-wide">
                 Target Day of Month
               </label>
@@ -232,7 +233,7 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
                 placeholder="20"
                 required
               />
-            </div>
+            </div>}
 
             <div className="flex items-center justify-between gap-4 p-3 bg-zinc-950/20 rounded-xl border border-zinc-800/40">
               <div>
@@ -259,7 +260,7 @@ export function PaydaySettingsClient({ initialConfig }: PaydaySettingsClientProp
       )}
 
       {/* Section 2b: Anchor Date for Weekly/Bi-Weekly */}
-      {frequency !== "monthly" && (
+      {(frequency === "weekly" || frequency === "bi_weekly") && (
         <section className="flex flex-col gap-3 animate-fade-in">
           <div className="flex items-center gap-2 px-2">
             <div className="w-6 h-6 rounded-full flex items-center justify-center bg-zinc-800 text-zinc-300">
