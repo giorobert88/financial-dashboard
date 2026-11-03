@@ -2,6 +2,8 @@
 
 ## 🌟 What's New in v0.3.0
 
+> Special thanks to **[@drobati](https://github.com/drobati)** for contributing both the system-adaptive light mode ([#19](https://github.com/giorobert88/financial-dashboard/pull/19)) and the semi-monthly payday schedule ([#18](https://github.com/giorobert88/financial-dashboard/pull/18)) in this release! 🎉
+
 ### 🌓 Automatic Light Mode (System Scheme Adaptive)
 - **Zero-Friction System Theme**: Light mode now automatically switches based on OS/browser preference (`prefers-color-scheme: light`) without altering dark mode's appearance.
 - **Inverted Palette & High Contrast**: Inverts Tailwind v4's zinc tokens and white/black variables, with darkened accent shades to maintain contrast on bright backgrounds.
