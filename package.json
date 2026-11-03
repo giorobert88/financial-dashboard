@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@serwist/next": "^9.5.12",
-    "chart.js": "^4.5.1",
+    "chart.js": "^4.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.51.0",
