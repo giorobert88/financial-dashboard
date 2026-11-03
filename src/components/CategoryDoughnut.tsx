@@ -1,12 +1,27 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { chartTheme } from "@/lib/chartjs-setup";
 import { useCurrency } from "./CurrencyContext";
 import dynamic from 'next/dynamic';
 const Doughnut = dynamic(() => import('react-chartjs-2').then((mod) => mod.Doughnut), { ssr: false });
 import { useRouter } from 'next/navigation';
 import { getCategoryStyle } from "@/lib/category-icons";
+
+function subscribeColorScheme(callback: () => void) {
+  if (typeof window === "undefined" || !window.matchMedia) return () => {};
+  const mq = window.matchMedia("(prefers-color-scheme: light)");
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+function getColorSchemeSnapshot() {
+  return typeof window !== "undefined" && !!window.matchMedia?.("(prefers-color-scheme: light)").matches;
+}
+
+function getColorSchemeServerSnapshot() {
+  return false;
+}
 
 interface CategoryDoughnutProps {
   periodId: string;
@@ -21,6 +36,11 @@ interface CategoryDoughnutProps {
 export function CategoryDoughnut({ periodId, data, linkable = true, linkQueryParam }: CategoryDoughnutProps) {
   const router = useRouter();
   const { fmt } = useCurrency();
+  const isLight = useSyncExternalStore(
+    subscribeColorScheme,
+    getColorSchemeSnapshot,
+    getColorSchemeServerSnapshot
+  );
 
   const chartData = useMemo(() => {
     const backgroundColors = data.map(d => {
@@ -34,12 +54,12 @@ export function CategoryDoughnut({ periodId, data, linkable = true, linkQueryPar
         {
           data: data.map(d => d.amount),
           backgroundColor: backgroundColors,
-          borderColor: 'rgba(9, 9, 11, 0.85)',
+          borderColor: isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(9, 9, 11, 0.85)',
           borderWidth: 1.5,
         },
       ],
     };
-  }, [data]);
+  }, [data, isLight]);
 
   const options = useMemo(() => ({
     responsive: true,

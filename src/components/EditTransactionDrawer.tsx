@@ -123,7 +123,7 @@ function EditTransactionForm() {
       <button
         onClick={handleSave}
         disabled={isSaving || isDeleting || isLoading}
-        className="px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 transition-all disabled:opacity-50"
+        className="px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-pure-white active:scale-95 transition-all disabled:opacity-50"
       >
         {isSaving ? (
           <Loader2 size={14} className="animate-spin" />

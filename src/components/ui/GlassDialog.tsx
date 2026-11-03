@@ -126,7 +126,7 @@ export function GlassDialog({
                   onConfirm();
                   onClose();
                 }}
-                className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold text-white active:scale-[0.98] transition-all shadow-lg ${
+                className={`flex-1 py-3 px-4 rounded-xl text-sm font-semibold text-pure-white active:scale-[0.98] transition-all shadow-lg ${
                   type === "error"
                     ? "bg-rose-500/80 hover:bg-rose-500 shadow-rose-500/10"
                     : type === "success"

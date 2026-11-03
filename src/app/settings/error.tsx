@@ -37,7 +37,7 @@ export default function SettingsError({
         </p>
         <button
           onClick={reset}
-          className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-white rounded-xl text-sm font-medium transition-all"
+          className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] text-pure-white rounded-xl text-sm font-medium transition-all"
         >
           Retry
         </button>

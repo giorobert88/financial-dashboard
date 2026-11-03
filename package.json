@@ -7,7 +7,9 @@
     "dev": "next dev -p 3001 -H 0.0.0.0",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "npm run test:payday",
+    "test:payday": "PAYDAY_CONFIG_PATH=$(mktemp) node --experimental-strip-types scripts/payday-semi-monthly.test.mts"
   },
   "dependencies": {
     "@serwist/next": "^9.5.12",

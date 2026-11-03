@@ -290,12 +290,13 @@ export async function updatePaydayConfigAction(
       }
     }
 
+    const isMonthly = !config.frequency || config.frequency === "monthly";
     const payload = {
       frequency: config.frequency || "monthly",
       anchorDate: config.frequency === "weekly" || config.frequency === "bi_weekly" ? config.anchorDate : undefined,
-      ruleType: config.ruleType,
-      fixedDate: config.ruleType === "fixed_date" ? Number(config.fixedDate) : undefined,
-      rollbackWeekend: config.ruleType === "fixed_date" ? !!config.rollbackWeekend : undefined,
+      ruleType: isMonthly ? config.ruleType : "fixed_date",
+      fixedDate: isMonthly && config.ruleType === "fixed_date" && config.fixedDate !== undefined ? Number(config.fixedDate) : undefined,
+      rollbackWeekend: (isMonthly && config.ruleType === "fixed_date") || config.frequency === "semi_monthly" ? !!config.rollbackWeekend : undefined,
     };
 
     const dir = path.dirname(PAYDAY_CONFIG_PATH);
