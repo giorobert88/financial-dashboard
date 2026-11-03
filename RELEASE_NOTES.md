@@ -1,5 +1,31 @@
 # Release Notes
 
+## 🌟 What's New in v0.3.0
+
+### 🌓 Automatic Light Mode (System Scheme Adaptive)
+- **Zero-Friction System Theme**: Light mode now automatically switches based on OS/browser preference (`prefers-color-scheme: light`) without altering dark mode's appearance.
+- **Inverted Palette & High Contrast**: Inverts Tailwind v4's zinc tokens and white/black variables, with darkened accent shades to maintain contrast on bright backgrounds.
+- **Solid Button Legibility**: Guaranteed pure white text on emerald green, rose, and amber action buttons (`GlassDialog`, transaction drawer, and error recovery pages).
+- **Theme-Aware Charts**:
+  - Category doughnut chart dynamically switches segment borders between dark and light backgrounds.
+  - Neutral zinc-500 axis tick marks and grid lines readable across all color schemes.
+  - Previous cycle comparison dashed lines tuned for legibility on light canvases.
+- **Browser Chrome Synchronization**: Dynamic `Viewport.themeColor` adjusts iOS Safari and mobile status bars to `#fafafa` in light mode and `#09090b` in dark mode.
+
+### 📅 Semi-Monthly Payday Schedule (15th & 30th)
+- **15th & 30th Frequency**: Added a fourth payday frequency (`semi_monthly`) for users paid on fixed dates twice monthly.
+- **February End-of-Month Handling**: Automatically resolves the second February payday to the last day of the month (Feb 28 or Feb 29 in leap years).
+- **Weekend Rollback Support**: Saturday or Sunday paydays optionally roll back to the preceding Friday.
+- **Continuous Cycle Navigation (`shiftCycle`)**: Replaced fixed millisecond stepping with calendar-aware cycle shifting, eliminating DST boundary drift across non-uniform cycles.
+- **Dedicated Test Suite**: Added `scripts/payday-semi-monthly.test.mts` with `npm test` / `npm run test:payday`.
+
+### 🛠️ Technical Improvements & Maintenance
+- **Clean Configuration Serialization**: Sanitized settings payload builder to avoid saving redundant `null` values for non-applicable rules.
+- **Docker Actions Updates**: Bumped GitHub Actions workflows (`docker/build-push-action@v7`, `docker/setup-buildx-action@v4`, `docker/login-action@v4`).
+- **Dependency Bumps**: Upgraded `lucide-react` (1.51.0), `eslint-config-next` (16.3.8), and `shadcn` (4.21.1).
+
+---
+
 ## 🌟 What's New in v0.2.0
 
 ### 📅 Flexible Payday Scheduling (Weekly & Bi-Weekly)
